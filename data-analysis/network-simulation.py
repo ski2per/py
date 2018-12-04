@@ -6,8 +6,8 @@ import subprocess
 from subprocess import Popen,PIPE
 
 def get_value():
-    cmd = 'peer chaincode query -C composerchannel -n cc -c \'{"Args":["query","a"]}\''
-    #cmd = 'peer chaincode query -C composerchannel -n mycc -c \'{"Args":["query","a"]}\''
+    #cmd = 'peer chaincode query -C composerchannel -n cc -c \'{"Args":["query","a"]}\''
+    cmd = 'peer chaincode query -C composerchannel -n mycc -c \'{"Args":["query","a"]}\''
 
     pipe = subprocess.run(cmd, shell=True, stdout=PIPE, stderr=PIPE)
     result =  pipe.stdout.decode().strip()
@@ -15,8 +15,8 @@ def get_value():
     return int(value)
 
 def invoke_chaincode():
-    cmd = 'peer chaincode invoke -o orderer1.example.com:7050 -C composerchannel -n cc -c \'{"Args":["invoke","a","b","1"]}\''
-    #cmd = 'peer chaincode invoke -o orderer1.example.com:7050 -C composerchannel -n mycc -c \'{"Args":["invoke","a","b","1"]}\''
+    #cmd = 'peer chaincode invoke -o orderer1.example.com:7050 -C composerchannel -n cc -c \'{"Args":["invoke","a","b","1"]}\''
+    cmd = 'peer chaincode invoke -o orderer1.example.com:7050 -C composerchannel -n mycc -c \'{"Args":["invoke","a","b","1"]}\''
     pipe = subprocess.run(cmd, shell=True, stdout=PIPE, stderr=PIPE)
 
     result = pipe.stderr.decode()
@@ -50,8 +50,8 @@ if __name__ == "__main__":
     
     #while True:
     with open("simulation.log", "w+") as log:
-        while True:
+        i = 0
+        while i < 200:
             line = get_log_line()
             print(line, file=log, flush=True)
-
-          
+            i += 1
