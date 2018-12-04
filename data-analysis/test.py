@@ -1,16 +1,9 @@
+#%%
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 import numpy as np
-x = np.linspace(0, 2, 100)
+import pandas as pd
 
-plt.plot(x, x, label='linear')
-plt.plot(x, x**2, label='quadratic')
-plt.plot(x, x**3, label='cubic')
+df = pd.read_json("sample\\simulation-0ms.log", lines=True)
 
-plt.xlabel('x label')
-plt.ylabel('y label')
-
-plt.title("Simple Plot")
-
-plt.legend()
-
-plt.show()
+df.plot()
