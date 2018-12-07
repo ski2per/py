@@ -6,7 +6,7 @@ import os.path
 import pandas as pd
 
 # SAMPLE_DIR = os.path.join(os.path.dirname(__file__), "sample")
-SAMPLE_DIR = os.path.join(os.path.dirname(__file__), "raw2")
+SAMPLE_DIR = os.path.join(os.path.dirname(__file__), "raw1")
 
 font = fm.FontProperties(fname="/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc")
 
@@ -42,11 +42,13 @@ def plot_all_sample():
         all_sample = all_sample.rename(columns={"elapse": delay})
 
 
-    # all_sample.columns = all_sample.columns.astype('int64')
+    all_sample.columns = all_sample.columns.astype('int64')
     # all_sample[:5].plot(sort_columns=True)
     all_sample = all_sample.reindex_axis(sorted(all_sample.columns), axis=1)
+    # all_sample.plot()
     # all_sample[:50].plot(ylim=(0, 15), subplots=True)
-    all_sample[:200].plot(ylim=(0, 15), subplots=True, layout=(10,2))
+    # all_sample[:200].plot(subplots=True, layout=(10,3), figsize=(10,10), sharex=False, ylim=(0, 15))
+    all_sample[:200].plot(figsize=(10,10), ylim=(0, 15))
 
 
     plt.show()
@@ -72,9 +74,9 @@ def plot_all_mean():
     # print(s.index)
     s.index = s.index.astype("int64")
     # s.sort_index().plot.bar()
-    ax = s.sort_index().plot(x="hello")
+    ax = s.sort_index().plot()
     ax.set_xlabel("网络延时(毫秒)", fontproperties=font)
-    ax.set_ylabel("平均交易成功时间(秒)", fontproperties=font)
+    ax.set_ylabel("成功交易平均耗时(秒)", fontproperties=font)
 
     print(s.sort_index())
     plt.show()
