@@ -6,7 +6,7 @@ import os.path
 import pandas as pd
 
 # SAMPLE_DIR = os.path.join(os.path.dirname(__file__), "sample")
-SAMPLE_DIR = os.path.join(os.path.dirname(__file__), "raw1")
+SAMPLE_DIR = os.path.join(os.path.dirname(__file__), "raw2")
 
 font = fm.FontProperties(fname="/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc")
 
@@ -44,11 +44,15 @@ def plot_all_sample():
 
     all_sample.columns = all_sample.columns.astype('int64')
     # all_sample[:5].plot(sort_columns=True)
-    all_sample = all_sample.reindex_axis(sorted(all_sample.columns), axis=1)
-    # all_sample.plot()
-    # all_sample[:50].plot(ylim=(0, 15), subplots=True)
-    # all_sample[:200].plot(subplots=True, layout=(10,3), figsize=(10,10), sharex=False, ylim=(0, 15))
-    all_sample[:200].plot(figsize=(10,10), ylim=(0, 15))
+    # all_sample = all_sample.reindex_axis(sorted(all_sample.columns), axis=1)
+
+    all_sample = all_sample.reindex(sorted(all_sample.columns), axis=1)
+
+    all_sample[:200].plot(subplots=True, layout=(10,2), figsize=(10,8), sharex=True, ylim=(0, 15))
+    # ax = all_sample[:200].plot()
+    # ax.set_xlabel("test")
+
+    # print(ax)
 
 
     plt.show()
@@ -80,6 +84,7 @@ def plot_all_mean():
 
     print(s.sort_index())
     plt.show()
+
 
 
 
