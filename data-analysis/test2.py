@@ -45,14 +45,17 @@ for fr in lists:
 #df.to_csv('new_book.csv', encoding='gbk', index=False)
 
 new_df = df.groupby("出版社").size().to_frame("count")
-#print(new_df)
+print(new_df)
 font = fm.FontProperties(fname="C:\Windows\Fonts\simhei.ttf")
 fig , ax = plt.subplots()
 _, texts, autotexts = ax.pie(new_df['count'], labels=new_df.index, autopct='%.2f')
 fig.set_figheight(10)
 fig.set_figwidth(10)
+#fig.suptitle("各出版社出版书籍比例", fontproperties=font)
 plt.setp(autotexts, fontproperties=font)
 plt.setp(texts, fontproperties=font)
+
+plt.title("各出版社出版书籍比例", fontproperties=font)
 
 plt.show()
 

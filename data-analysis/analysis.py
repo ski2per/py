@@ -8,7 +8,9 @@ import pandas as pd
 # SAMPLE_DIR = os.path.join(os.path.dirname(__file__), "sample")
 SAMPLE_DIR = os.path.join(os.path.dirname(__file__), "raw2")
 
-font = fm.FontProperties(fname="/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc")
+# font = fm.FontProperties(fname="/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc")
+# font = fm.FontProperties(fname="C:\Windows\Fonts\simsun.ttc")
+font = fm.FontProperties(fname="C:\Windows\Fonts\simhei.ttc")
 
 
 def get_sample_list():
@@ -90,5 +92,5 @@ def plot_all_mean():
 
 
 if __name__ == "__main__":
-    plot_all_sample()
-    # plot_all_mean()
+    # plot_all_sample()
+    plot_all_mean()

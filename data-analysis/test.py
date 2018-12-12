@@ -1,7 +1,5 @@
-#%%
-import numpy as np
-import pandas as pd
+import matplotlib.font_manager as fm
 
-df = pd.read_json("sample\\simulation-0ms.log", lines=True)
 
-df.plot()
+tmp = fm.findSystemFonts("C:\Windows\Fonts", fontext="ttf")
+print(tmp)
