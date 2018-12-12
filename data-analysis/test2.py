@@ -45,14 +45,14 @@ font = fm.FontProperties(fname="C:\Windows\Fonts\simhei.ttf")
 df["价格"] = pandas.to_numeric(df["价格"])
 
 fig, ax = plt.subplots()
-ax.bar(df["书名"], df["价格"])
+ax.bar(df["书名"], df["价格"], color='green')
 ax.set_xticklabels(df["书名"], fontproperties=font, rotation="vertical")
 ax.set_ylabel("价格（元）", fontproperties=font)
 ax.set_xlabel("书名", fontproperties=font)
 fig.tight_layout()
 
-# plt.show()
-plt.savefig("image.jpg")
+plt.show()
+# plt.savefig("image.jpg")
 
 
 '''

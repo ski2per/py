@@ -55,7 +55,8 @@ plt.setp(autotexts, fontproperties=font)
 plt.setp(texts, fontproperties=font)
 
 plt.title("各出版社出版书籍比例", fontproperties=font)
-plt.savefig("image.jpg")
+plt.show()
+# plt.savefig("image.jpg")
 
 
 
@@ -67,9 +68,3 @@ with open('book.txt','w',encoding='utf-8') as f:
         i=i+1
         f.write(context)
 '''
-        
-
-
-        
-
-

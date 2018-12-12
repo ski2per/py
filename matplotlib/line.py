@@ -4,7 +4,7 @@ import matplotlib.font_manager as fm
 import numpy as np
 
 # Generate data
-index = pd.date_range('1/1/2000', periods=8)
+index = pd.date_range('1/1/2018', periods=8)
 data = pd.DataFrame(np.random.randn(8, 3), index=index, columns=["测试1","测试2","测试3"])
 
 # Get Chinese font
@@ -19,7 +19,7 @@ plt.show()
 
 
 # ================ Matplotlib way ================
-fig, ax = plt.subplot()
+# fig, ax = plt.subplot()
 
-ax.line()
+# ax.line()
 
