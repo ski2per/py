@@ -30,29 +30,33 @@ html=response.text
 strhtml=BeautifulSoup(html,'lxml')
 lists=strhtml.select('[class="title"]')
 lists2=strhtml.select('[class="price"]')
+lists3=strhtml.select('[class="publisher"]')
 
 df = pandas.DataFrame()
 i=0
 for fr in lists:
-    context = fr.string+ '：'+ lists2[i].string.replace('¥','')
+    context = fr.string+ '：'+ lists2[i].string.replace('¥','') + '：' + lists3[i].string
     #print(context)
     i=i+1
-    tmp = pandas.DataFrame([context.split('：')], columns=["书名", "价格"])
+    tmp = pandas.DataFrame([context.split('：')], columns=["书名", "价格", "出版社"])
     df = df.append(tmp, ignore_index=True)
 
+print(df)
+#df.to_csv('new_book.csv', encoding='gbk', index=False)
+
+new_df = df.groupby("出版社").size().to_frame("count")
 
 font = fm.FontProperties(fname="C:\Windows\Fonts\simhei.ttf")
-df["价格"] = pandas.to_numeric(df["价格"])
+fig , ax = plt.subplots()
+_, texts, autotexts = ax.pie(new_df['count'], labels=new_df.index, autopct='%.2f')
+fig.set_figheight(10)
+fig.set_figwidth(10)
+plt.setp(autotexts, fontproperties=font)
+plt.setp(texts, fontproperties=font)
 
-fig, ax = plt.subplots()
-ax.bar(df["书名"], df["价格"])
-ax.set_xticklabels(df["书名"], fontproperties=font, rotation="vertical")
-ax.set_ylabel("价格（元）", fontproperties=font)
-ax.set_xlabel("书名", fontproperties=font)
-fig.tight_layout()
-
-# plt.show()
+plt.title("各出版社出版书籍比例", fontproperties=font)
 plt.savefig("image.jpg")
+
 
 
 '''
