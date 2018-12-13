@@ -16,7 +16,7 @@ main_color = 'green'
 # Linux
 font = fm.FontProperties(fname="/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc")
 # Windows
-font = fm.FontProperties(fname="C:\Windows\Fonts\simhei.ttf")
+# font = fm.FontProperties(fname="C:\Windows\Fonts\simhei.ttf")
 
 
 fig, ax = plt.subplots()

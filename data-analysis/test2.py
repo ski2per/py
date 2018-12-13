@@ -21,6 +21,7 @@ fibo(1)
 import requests
 import pandas
 from bs4 import BeautifulSoup
+
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 
@@ -41,14 +42,23 @@ for fr in lists:
     df = df.append(tmp, ignore_index=True)
 
 
+# 加载中文字体
 font = fm.FontProperties(fname="C:\Windows\Fonts\simhei.ttf")
+# 将价格内容转换为数字类型
 df["价格"] = pandas.to_numeric(df["价格"])
 
+# 创建空白图片
 fig, ax = plt.subplots()
+# 将书名作为x轴，价格作为y轴，创建柱状图
 ax.bar(df["书名"], df["价格"], color='green')
+# 设置书名作为x轴的记号标签，并垂直显示
 ax.set_xticklabels(df["书名"], fontproperties=font, rotation="vertical")
+
+# 设置x y 标签, 并设置中文字体
 ax.set_ylabel("价格（元）", fontproperties=font)
 ax.set_xlabel("书名", fontproperties=font)
+
+# 设置紧凑布局，防止导出的图片显示不完整
 fig.tight_layout()
 
 plt.show()

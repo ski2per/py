@@ -44,16 +44,24 @@ for fr in lists:
 print(df)
 #df.to_csv('new_book.csv', encoding='gbk', index=False)
 
+# 通过出版社名来分组，计算每个出版社出书数量
 new_df = df.groupby("出版社").size().to_frame("count")
 
+# 加载中文字体
 font = fm.FontProperties(fname="C:\Windows\Fonts\simhei.ttf")
+# 创建空白图片
 fig , ax = plt.subplots()
+# 创建饼图，设置显示格式，并获取饼图上的文本
 _, texts, autotexts = ax.pie(new_df['count'], labels=new_df.index, autopct='%.2f')
+# 设置图片宽高
 fig.set_figheight(10)
 fig.set_figwidth(10)
+
+# 设置饼图文本的字体为中文, 防止中文乱码
 plt.setp(autotexts, fontproperties=font)
 plt.setp(texts, fontproperties=font)
 
+# 设置图表标题
 plt.title("各出版社出版书籍比例", fontproperties=font)
 plt.show()
 # plt.savefig("image.jpg")
