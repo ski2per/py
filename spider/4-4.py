@@ -13,7 +13,7 @@ html = lxml.html.fromstring(http_response.text)
 # 通过网页左侧书籍所在的div元素的class属性来获取所有左侧的所有书籍
 left_books = html.xpath('//div[@class="yd-book-item yd-book-item-pull-left"]')
 # 通过网页右侧书籍所在的div元素的class属性来获取所有右侧的所有书籍
-right_books = html.xpath('//div[@class=yd-book-item yd-book-item-pull-left edge-right"]')
+right_books = html.xpath('//div[@class="yd-book-item yd-book-item-pull-left edge-right"]')
 
 # 将两个书籍列表合并，得到本页所有书籍
 books = left_books + right_books
@@ -30,4 +30,3 @@ for book in books:
 
     # 格式化输出
     print('<<{}>>, 作者: {}, 评分: {}'.format(title, author, rate))
-
