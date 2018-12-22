@@ -27,6 +27,6 @@ with open('books.txt', 'w', encoding='utf-8') as f:
             spans = book.xpath('.//span[@class="no"]')
             rate = 5 - len(spans)
 
-            # 格式化输出
-            print('<<{}>>,作者:{},评分:{}'.format(title, author, rate), file=f)
+            # 将书名，作者，评分通过逗号连接起来，作为一行保存到文件里
+            print('{},{},{}'.format(title, author, rate), file=f)
         
