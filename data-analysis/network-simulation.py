@@ -10,16 +10,14 @@ from subprocess import Popen, PIPE
 
 def write_log(rnd, action, msg):
     log_time = strftime("%Y%m%d %H:%M:%S", localtime())
-    log = "[{}]<Round {}>({}): {}".format(log_time, action, rnd, msg)
+    log = "[{}]<Round {}>({}): {}".format(log_time, rnd, action, msg)
     print(log, flush=True)
     
     
 def query_chaincode():
-    #cmd = 'peer chaincode query -C mychannel -n mycc -c \'{"Args":["query","a"]}\''
-    cmd = 'peer chaincode query -C mychannel -n aaa -c \'{"Args":["query","a"]}\''
-    # cmd = 'peer chaincode query -C composerchannel -n mycc -c \'{"Args":["query","a"]}\''
+    cmd = 'peer chaincode query -C mychannel -n mycc -c {"Args":["query","a"]}'
 
-    pipe = subprocess.run(cmd, shell=True, stdout=PIPE, stderr=PIPE)
+    pipe = subprocess.run(cmd.split(), stdout=PIPE, stderr=PIPE)
     std_out = pipe.stdout.decode().strip()
     #print("stdout:", std_out)
     std_err = pipe.stderr.decode().strip()
@@ -47,9 +45,8 @@ def query_till_success(rnd):
 
 
 def invoke_chaincode():
-    cmd = 'peer chaincode invoke -o orderer.example.com:7050 -C mychannel -n aaa -c \'{"Args":["invoke","a","b","1"]}\''
-    #cmd = 'peer chaincode invoke -o orderer.example.com:7050 -C mychannel -n mycc -c \'{"Args":["invoke","a","b","1"]}\''
-    pipe = subprocess.run(cmd, shell=True, stdout=PIPE, stderr=PIPE)
+    cmd = 'peer chaincode invoke -o orderer.example.com:7050 -C mychannel -n mycc -c {"Args":["invoke","a","b","1"]}'
+    pipe = subprocess.run(cmd.split(), stdout=PIPE, stderr=PIPE)
 
     std_out = pipe.stdout.decode()
     #print("stdout:", std_out)
