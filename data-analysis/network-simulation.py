@@ -8,10 +8,10 @@ from subprocess import Popen, PIPE
 
 
 
-def write_log(rnd, msg):
+def write_log(rnd, action, msg):
     log_time = strftime("%Y%m%d %H:%M:%S", localtime())
-    log = "[{}]<Round {}>: {}".format(log_time, rnd, msg)
-    print(log)
+    log = "[{}]<Round {}>({}): {}".format(log_time, action, rnd, msg)
+    print(log, flush=True)
     
     
 def query_chaincode():
@@ -29,19 +29,18 @@ def query_chaincode():
         value = re.match('.+?\s*:\s*(\d+)', std_out)
         return value.group(1)
     else:
+        error =""
         try:
             error = re.search('error.+', std_err, re.I)
             return error.group(0)
         except AttributeError as err:
-            print("UNKNOWN ERR IN query_chaincode(): {}".format(err))
-            print(error)
-            return "UNKOWN"
+            return "UNKNOWN ERR IN query_chaincode()[{}]: {}".format(err, error)
 
 def query_till_success(rnd):
     value = query_chaincode()
     while not value.isdigit():
-        # If query value is not digit, then write log
-        write_log(rnd, value)
+        # If query value is not a digit, write error to log
+        write_log(rnd, "query", value)
         value = query_chaincode()
     value = int(value)
     return value
@@ -61,28 +60,26 @@ def invoke_chaincode():
     if status:
         return status.group(1)
     else:
+        error = ""
         try:
             error = re.search('error:.+', std_err, re.I)
             return error.group(0)
         except AttributeError as err:
-            print("UNKNOWN ERR IN invoke_chaincode(): {}".format(err))
-            print(error)
-            return "UNKOWN"
+            return "UNKNOWN ERR IN query_chaincode()[{}]: {}".format(err, error)
 
 
 def test(rnd):
     test_info = {}
-
     start_time = time.time()
         
     # ====== Get value before invoking ======
     value_before = query_till_success(rnd)
-    write_log(rnd, "Query Value Before Success: {}".format(value_before))
+    write_log(rnd, "query", "Query Value Before Success: {}".format(value_before))
 
     # ====== Invoke chaincode till success ======
     status = invoke_chaincode()
     while not status.isdigit():
-        write_log(rnd, status)
+        write_log(rnd, "invoke", status)
         status = invoke_chaincode()
 
     # ====== Get value till value changed ======
