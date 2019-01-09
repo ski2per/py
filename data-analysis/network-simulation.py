@@ -7,32 +7,37 @@ import subprocess
 from subprocess import Popen, PIPE
 
 
-
-def write_log(rnd, action, msg):
+def write_log(rnd, trans, msg):
+    """
+    :param rnd:  test round
+    :param trans: traction type: query or invoke
+    :param msg: log message
+    """
     log_time = strftime("%Y%m%d %H:%M:%S", localtime())
-    log = "[{}]<Round {}>({}): {}".format(log_time, rnd, action, msg)
+    log = "[{}]<Round {}>({}): {}".format(log_time, rnd, trans, msg)
     print(log, flush=True)
-    
-    
+
+
 def query_chaincode():
     cmd = 'peer chaincode query -C mychannel -n mycc -c {"Args":["query","a"]}'
 
     pipe = subprocess.run(cmd.split(), stdout=PIPE, stderr=PIPE)
     std_out = pipe.stdout.decode().strip()
-    #print("stdout:", std_out)
+    # print("stdout:", std_out)
     std_err = pipe.stderr.decode().strip()
-    #print("stderr:", std_err)
+    # print("stderr:", std_err)
 
     if std_out:
         value = re.match('.+?\s*:\s*(\d+)', std_out)
         return value.group(1)
     else:
-        error =""
+        error = ""
         try:
             error = re.search('error.+', std_err, re.I)
             return error.group(0)
         except AttributeError as err:
             return "UNKNOWN ERR IN query_chaincode()[{}]: {}".format(err, error)
+
 
 def query_till_success(rnd):
     value = query_chaincode()
@@ -49,9 +54,9 @@ def invoke_chaincode():
     pipe = subprocess.run(cmd.split(), stdout=PIPE, stderr=PIPE)
 
     std_out = pipe.stdout.decode()
-    #print("stdout:", std_out)
+    # print("stdout:", std_out)
     std_err = pipe.stderr.decode()
-    #print("stderr:", std_err)
+    # print("stderr:", std_err)
 
     status = re.search('success.+status.+?(\d+)', std_err, re.I)
     if status:
@@ -68,7 +73,7 @@ def invoke_chaincode():
 def test(rnd):
     test_info = {}
     start_time = time.time()
-        
+
     # ====== Get value before invoking ======
     value_before = query_till_success(rnd)
     write_log(rnd, "query", "Query Value Before Success: {}".format(value_before))
@@ -83,9 +88,9 @@ def test(rnd):
     value_after = query_till_success(rnd)
     while value_before == value_after:
         value_after = query_till_success(rnd)
-    
+
     end_time = time.time()
-    
+
     test_info["round"] = rnd
     test_info["startTime"] = start_time
     test_info["valueBefore"] = value_before
@@ -93,6 +98,7 @@ def test(rnd):
     test_info["endTime"] = end_time
 
     return json.dumps(test_info)
+
 
 if __name__ == "__main__":
     with open("data.log", "w+") as data:
