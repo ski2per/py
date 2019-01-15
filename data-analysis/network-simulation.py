@@ -11,7 +11,7 @@ def write_log(rnd, trans, msg):
     """
     :param rnd:  test round
     :param trans: traction type: query or invoke
-    :param msg: log message
+    :param msg: message for logging
     """
     log_time = strftime("%Y%m%d %H:%M:%S", localtime())
     log = "[{}]<Round {}>({}): {}".format(log_time, rnd, trans, msg)
