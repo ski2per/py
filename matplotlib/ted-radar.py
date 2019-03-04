@@ -2,16 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from math import pi
 
-# Set data
-df = pd.DataFrame({
-'ability': ['value2mybest'],
-'ENGLISH': [80],
-'LONGBOARD': [65],
-'UKULELE': [10],
-'COOKING': [20],
-'HANDWRITING': [5],
-})
-
+# Abilities data
 ted_abilities = {
     'ENGLISH': 80,
     'LONGBOARD': 65,
