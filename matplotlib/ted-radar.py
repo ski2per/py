@@ -1,11 +1,10 @@
 import matplotlib.pyplot as plt
-import pandas as pd
 from math import pi
 
 # Abilities data
 ted_abilities = {
-    'ENGLISH': 80,
-    'LONGBOARD': 65,
+    'ENGLISH': 70,
+    'LONGBOARD': 60,
     'UKULELE': 10,
     'COOKING': 20,
     'HANDWRITING': 5,
@@ -15,7 +14,6 @@ ted_abilities = {
 # categories=list(df)[1:]
 categories = ted_abilities.keys()
 N = len(categories)
-print(N)
 
 # But we need to repeat the first value to close the circular graph:
 values=list(ted_abilities.values())
@@ -29,17 +27,17 @@ angles += angles[:1]
 ax = plt.subplot(111, polar=True)
 
 # Draw one axe per variable + add labels labels yet
-plt.xticks(angles[:-1], categories, color='green', size=10)
+plt.xticks(angles[:-1], categories, color='#0047BD', size=10)
 
 # Draw ylabels
 ax.set_rlabel_position(0)
-plt.yticks([0,20,40,60,80], ["0","20","40","60","80"], color="red", size=7)
+plt.yticks([0,20,40,60,80], ["0","20","40","60","80"], color="#FD4703", size=7)
 plt.ylim(0,100)
 
 # Plot data
-ax.plot(angles, values, linewidth=1.5, linestyle='solid')
+ax.plot(angles, values, linewidth=1.5, linestyle='solid', color='#009543')
 
 # Fill area
-ax.fill(angles, values, 'b', color='orange', alpha=0.6)
+ax.fill(angles, values, 'b', color='#00AB38', alpha=0.6)
 
 plt.show()
