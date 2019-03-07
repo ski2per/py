@@ -3,10 +3,10 @@ from math import pi
 
 # Abilities data
 ted_abilities = {
-    'ENGLISH': 70,
-    'LONGBOARD': 60,
+    'ENGLISH': 60,
+    'LONGBOARD': 50,
     'UKULELE': 10,
-    'COOKING': 20,
+    # 'COOKING': 20,
     'HANDWRITING': 5,
 }
 
