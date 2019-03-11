@@ -6,8 +6,8 @@ ted_abilities = {
     'COMPUTER': 60,
     'ENGLISH': 50,
     'LONGBOARD': 40,
-    'UKULELE': 10,
-    'HANDWRITING': 5,
+    'UKULELE': 12,
+    'HANDWRITING': 10,
 }
 
 # number of variable
