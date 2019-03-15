@@ -1,7 +1,8 @@
-Network:
-  Name: demo
-  External: true
-CryptoPath: /pan/crypto-config
+NETWORK:
+  NAME: demo
+  EXTERNAL: true
+CRYPTO_PATH: /pan/crypto-config
+ARTIFACTS_PATH: /pan/channel-artifacts
 # Below is official configuration
 OrdererOrgs:
   - Name: Orderer
