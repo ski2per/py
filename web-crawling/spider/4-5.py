@@ -1,28 +1,31 @@
+import time
 import requests
 import lxml.html
 
-# 获取网易云阅读文字作品网页
-http_response = requests.get("http://yuedu.163.com/book/category/category/2100")
-# 设置中文编码
-http_response.encoding = "utf-8"
 
-# 将HTTP响应的HTML文本通过lxml.html.fromstring方法
-# 转换成可以使用XPath的来分析的对象
-html = lxml.html.fromstring(http_response.text)
+url_template = 'https://movie.douban.com/top250?start={}&filter='
 
-# 通过谷歌开发者工具来辅助获取书籍列表的<div>元素
-books = html.xpath('//*[@id="page-163-com"]/div[2]/div[3]/div/div[2]/div[2]/div/div[2]/div')
+with open('movies.txt', 'w') as f:
+    for page in range(0, 10):
+        print("抓取第{}页".format(page + 1))
 
-# 通过python的循环来依次获取我们所需要的书籍信息
-for book in books:
-    # 获取标题
-    title = book.xpath('.//h2')[0].text_content()
-    # 获取作者
-    author = book.xpath('.//dd')[0].text_content()
-    # 获取评分
-    spans = book.xpath('.//span[@class="no"]')
-    rate = 5 - len(spans)
+        url = url_template.format(page * 25)
+        http_response = requests.get(url)
+        http_response.encoding = "utf-8"
+        html = lxml.html.fromstring(http_response.text)
+        movies = html.xpath('//*[@id="content"]/div/div[1]/ol/li')
+        for movie in movies:
+            text = str(movie.text_content())
 
-    # 格式化输出
-    print('<<{}>>, 作者: {}, 评分: {}'.format(title, author, rate))
+            # 可以使用print来输出文本看下是什么样子
+            # print(text)
 
+            # 也可以通过repr()方法来显示字符串里的特殊字符
+            #print(repr(text))
+
+            # 稍微处理一下，替换掉字符串中的特殊字符'\n'
+            clean_text = text.replace('\n', '')
+            print(clean_text, file=f)
+
+        # 抓取数据的时候稍等停顿一下，不要对目标网站造成太大的压力
+        time.sleep(3)
