@@ -4,7 +4,7 @@ from math import pi
 # Abilities data
 ted_abilities = {
     'COMPUTER': 60,
-    'ENGLISH': 50,
+    'ENGLISH': 55,
     'LONGBOARD': 40,
     'UKULELE': 16,
     'HANDWRITING': 10,
