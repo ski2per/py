@@ -6,7 +6,7 @@ ted_abilities = {
     'COMPUTER': 60,
     'ENGLISH': 55,
     'LONGBOARD': 40,
-    'UKULELE': 18,
+    'UKULELE': 25,
     'DRIVING': 50,
 }
 
