@@ -31,7 +31,7 @@ plt.xticks(angles[:-1], categories, color='#0047BD', size=10)
 
 # Draw ylabels
 ax.set_rlabel_position(0)
-plt.yticks([0,20,40,60,80], ["0","20","40","60","80"], color="#FD4703", size=7)
+plt.yticks([0,20,40,60,80], ["0","20","40","60","80"], color="#000000", size=8)
 plt.ylim(0,100)
 
 # Plot data
