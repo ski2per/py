@@ -8,8 +8,10 @@ def print_multi_table():
             # print("{} * {} = {}".format(i, j, i*j), end="")
             # print(" ", end="")
 
-            print("{} * {} = {}".format(i, j, i*j)),
-            print(" "),
+            print("{}*{}={}".format(i, j, i*j),end=" "),
+            # print(" "),
 
         print("")
 
+if __name__ == "__main__":
+    print_multi_table()
