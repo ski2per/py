@@ -21,7 +21,7 @@ import os.path
 import paramiko
 
 
-class SSHer(object):
+class MySSH(object):
     CONFIG_FILE = "host.conf"
     DEFAULT_PORT = 22
     CONNECTION_TIMEOUT = 5
@@ -193,8 +193,8 @@ if __name__ == "__main__":
                 else:
                     print(usage)
 
-            ssher = SSHer()
-            ssher.execute(mode, item)
+            myssh = MySSH()
+            myssh.execute(mode, item)
         else:
             print(usage)
 
