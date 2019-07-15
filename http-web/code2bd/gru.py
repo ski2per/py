@@ -8,7 +8,6 @@ from tornado.escape import json_decode
 from redis import Redis, RedisError
 
 
-
 def get_minion_num():
     try:
         redis = Redis(host="localhost", port=6379, db=0)
@@ -23,13 +22,14 @@ class Index(tornado.web.RequestHandler):
     def get(self):
         self.write("Online Minions: {}".format(get_minion_num()))
 
-    #def post(self):
+    # def post(self):
     #    print(self.request.headers)
     #    print(self.request.body)
     #    print(self.get_body_arguments("cpu"))
     #    self.data = json_decode(self.request.body)
     #    print(self.data)
     #    self.write(json.dumps({"ok": "got it"}))
+
 
 class OnlineWS(tornado.websocket.WebSocketHandler):
     def open(self):
@@ -44,7 +44,6 @@ class OnlineWS(tornado.websocket.WebSocketHandler):
 
 class Gru(tornado.web.Application):
     def __init__(self):
-
         handlers = [
             (r"/", Index),
             (r"/ws", OnlineWS)
@@ -56,6 +55,7 @@ class Gru(tornado.web.Application):
         )
 
         super(Gru, self).__init__(handlers, **settings)
+
 
 if __name__ == "__main__":
     http_svr = tornado.httpserver.HTTPServer(Gru())
