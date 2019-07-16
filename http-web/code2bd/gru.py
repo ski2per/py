@@ -7,6 +7,7 @@ import tornado.ioloop
 from tornado.escape import json_decode
 from redis import Redis, RedisError
 
+USERS = set()
 
 def get_minion_num():
     try:

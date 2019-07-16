@@ -27,6 +27,9 @@ async def notify_users():
 
 async def register(websocket):
     USERS.add(websocket)
+    print(USERS)
+    for user in USERS:
+        print(repr(user))
     await notify_users()
 
 async def unregister(websocket):
