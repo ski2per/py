@@ -1,6 +1,6 @@
 import re
 
-with open("application-dkxl.yml") as f:
+with open("demo.yml") as f:
     lines = f.readlines()
 
 prop = []
