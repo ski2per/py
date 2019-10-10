@@ -1,4 +1,5 @@
-from random import randint
+import time
+import random
 
 
 def bubble_sort(arr):
@@ -12,7 +13,7 @@ def bubble_sort(arr):
             if arr[j] > arr[j + 1]:
                 # Swap(Pythonic)
                 arr[j], arr[j + 1] = arr[j + 1], arr[j]
-            print(arr)
+            # print(arr)
     return arr
 
 
@@ -24,15 +25,21 @@ def bubble_sort_optimized(arr):
             if arr[j] > arr[j + 1]:
                 arr[j], arr[j + 1] = arr[j + 1], arr[j]
                 swapped = True
-            print(arr)
+            # print(arr)
         if not swapped:
             break
     return arr
 
 
 if __name__ == '__main__':
-    # numbers = [2, 7, 4, 1, 5, 3]
-    # numbers = [5, 1, 4, 2, 8]
-    numbers = [1, 2, 3, 4, 5]
-    # print(bubble_sort(numbers))
+    # numbers = [1, 2, 3, 4, 5]
+    numbers = [random.randint(0, 1000) for _ in range(1000)]
+    t0 = time.time()
+    print(bubble_sort(numbers))
+    t1 = time.time()
+    print("Elapse: {}".format(t1-t0))
+
+    t0 = time.time()
     print(bubble_sort_optimized(numbers))
+    t1 = time.time()
+    print("Elapse: {}".format(t1-t0))
