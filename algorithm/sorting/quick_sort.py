@@ -1,3 +1,7 @@
+import time
+import random
+
+
 def partition(arr, low, high):
     i = low - 1  # index of smaller element
     pivot = arr[high]
@@ -17,32 +21,34 @@ def quick_sort(arr, low, high):
         quick_sort(arr, low, pi-1)
         quick_sort(arr, pi+1, high)
 
-def sort(array=[12,4,5,6,7,3,1,15]):
-    """Sort the array by using quicksort."""
 
-    less = []
+def quick_sort_pythonic(arr):
+    lesser = []
     equal = []
     greater = []
 
-    if len(array) > 1:
-        pivot = array[0]
-        for x in array:
+    if len(arr) > 1:
+        pivot = arr[0]
+        for x in arr:
             if x < pivot:
-                less.append(x)
+                lesser.append(x)
             elif x == pivot:
                 equal.append(x)
             elif x > pivot:
                 greater.append(x)
-        # Don't forget to return something!
-        return sort(less)+equal+sort(greater)  # Just use the + operator to join lists
-    # Note that you want equal ^^^^^ not pivot
-    else:  # You need to handle the part at the end of the recursion - when you only have one element in your array, just return the array.
-        return array
+        return quick_sort_pythonic(lesser) + equal + quick_sort_pythonic(greater)
+    else:
+        return arr
 
 
 if __name__ == '__main__':
-    numbers = [10, 7, 8, 9, 1, 5]
-    n = len(numbers)
-    quick_sort(numbers, 0, n-1)
+    # numbers = [10, 7, 8, 9, 1, 5]
+    numbers = [random.randint(0, 1000) for _ in range(1000)]
+    t0 = time.time()
+    print(quick_sort_pythonic(numbers))
+    t1 = time.time()
+    print('Elaspse: {}'.format(t1-t0))
 
-    print(numbers)
+    # n = len(numbers)
+    # quick_sort(numbers, 0, n-1)
+    # print(numbers)
