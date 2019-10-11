@@ -1,3 +1,6 @@
+import time
+import random
+
 def selection_sort(arr):
     n = len(arr)
 
@@ -16,6 +19,9 @@ def selection_sort(arr):
 
 
 if __name__ == '__main__':
-    numbers = [4, 2, 5, 7, 1, 3]
-    # numbers = [7, 5, 4, 3, 2, 1]
+    # numbers = [4, 2, 5, 7, 1, 3]
+    numbers = [random.randint(0, 1000) for _ in range(1000)]
+    t0 = time.time()
     print(selection_sort(numbers))
+    t1 = time.time()
+    print('Elapse: {}'.format(t1-t0))
