@@ -58,10 +58,30 @@ class Nexus:
         component_url = '{}/service/rest/v1/components/{}'.format(self.base_url, component_id)
         return self._fetch_url(component_url)
 
-    def upload_component(self, repo_name, data: dict):
-        components_url = '{}/service/rest/v1/components?repository={}'.format(self.base_url, repo_name)
-
-        pass
+    # To be optimized
+    def transfer_maven_componemt(self):
+        source = 'maven-hosted'
+        components = self.list_components(source, r'rate')
+        cid = 'bWF2ZW4taG9zdGVkOjM2ZTNkZWM4ZGU1MjhjOWIyZmFiNTdlNDAyM2Y3YmI5'
+        component = self.list_component(cid)
+        components = [component]
+        for comp in components:
+            source_url = comp['assets'][0]['downloadUrl']
+            with requests.get(source_url, stream=True) as r:
+                with open('tmp.jar', 'wb') as f:
+                    shutil.copyfileobj(r.raw, f)
+            with open('tmp.jar', 'rb') as jar:
+                form_data = {
+                    'maven2.groupId': (None, comp['group']),
+                    'maven2.artifactId': (None, comp['name']),
+                    'maven2.version': (None, comp['version']),
+                    'maven2.generate-pom': (None, 'false'),
+                    'maven2.asset1': jar,
+                    'maven2.asset1.extension': (None, 'jar')
+                }
+                r = requests.post('https://nexus.ted.mighty/service/rest/v1/components?repository=m2-hosted', verify=False,
+                                  auth=('user', 'user'), files=form_data)
+                print(r.status_code)
 
 
 if __name__ == '__main__':
@@ -72,38 +92,15 @@ if __name__ == '__main__':
     #    delete_component(component['id'])
     #    time.sleep(2)
 
-    cid = 'bWF2ZW4taG9zdGVkOjM2ZTNkZWM4ZGU1MjhjOWIzMGVmMTUzMWUzY2I1MDVk'
-    # cid = 'bWF2ZW4taG9zdGVkOjE4ZGRlY2NkZmI0OTFlY2I2NDMxMmU3MDkxM2Y3ZDE1'
+    nexus.transfer_maven_componemt()
 
-    # components = nexus.list_components('maven-hosted')
-    # for comp in components:
-    #     print(comp)
 
-    foo = nexus.list_component(cid)
-    print(foo)
-    url = 'http://172.16.101.214:8081/repository/maven-hosted/com/wish30/1.6/wish30-1.6.jar'
-    local_filename = url.split('/')[-1]
-    file = open('wish30-1.6.jar', 'rb')
-    form_data = {
-        'maven2.groupID': foo['group'],
-        'maven2.artifactId': foo['name'],
-        'maven2.version': foo['version'],
-        'maven2.generate-pom': 'false',
-        'maven2.asset1': file,
-        'maven2.asset1.extension': 'jar'
-    }
 
-    print(form_data)
-    headers = {
-        'Content-type': 'multipart/form-data, boundary=xxxxxxxxxxxxxxxxxoooooooooooo',
-    }
-    # r = requests.post('http://nexus.ted.mighty/service/rest/v1/components?repository=m2-hosted', verify=False,
-    #                   auth=('user', 'user'), data=form_data)
-    r = requests.post('http://nexus.ted.mighty/service/rest/v1/components?repository=m2-hosted',
-                      auth=('user', 'user'), data=form_data)
-    print(r.status_code)
 
-    #with requests.get(url, stream=True) as r:
-    #    with open(local_filename, 'wb') as f:
-    #        shutil.copyfileobj(r.raw, f)
+    # foo = nexus.list_component(cid)
+    # print(foo)
+    # url = 'http://172.16.101.214:8081/repository/maven-hosted/com/wish30/1.6/wish30-1.6.jar'
+    # local_filename = url.split('/')[-1]
+    #
+    #
 
