@@ -99,7 +99,6 @@ def plot_single(file_name, percent):
     plt.show()
 
 
-
 if __name__ == "__main__":
     # plot_all_sample()
     # plot_all_mean()
