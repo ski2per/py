@@ -4,8 +4,10 @@ from boto.s3.key import Key
 
 
 def get_conn():
-    access_key = 'JCF0SIK9IWI8T342JHAK'
-    secret_key = 'asWSa7N6tdyQldFrCw4ByqfWnD9QdUtqe9JNeAcf'
+    # access_key = 'JCF0SIK9IWI8T342JHAK'
+    # secret_key = 'asWSa7N6tdyQldFrCw4ByqfWnD9QdUtqe9JNeAcf'
+    access_key = 'ZH5VXDGTB1I9XMVWGYC0'
+    secret_key = 'BAaFsg9NMfvf5VzNI4ej5o5bjeouSq9iswq05IDn'
 
     conn = boto.connect_s3(aws_access_key_id=access_key, aws_secret_access_key=secret_key,
                            host="ceph.ted.mighty", is_secure=False,
@@ -25,15 +27,15 @@ def list_bucket(conn):
 
 if __name__ == '__main__':
     rgw_conn = get_conn()
-    # create_bucket(rgw_conn, 'apple')
+    create_bucket(rgw_conn, 'car')
     list_bucket(rgw_conn)
-    apple = rgw_conn.get_bucket('apple')
+    # apple = rgw_conn.get_bucket('apple')
 
-    k = Key(apple)
+    # k = Key(apple)
 
-    for key in apple.list():
-        print(key.name)
-        print(key.size)
+    # for key in apple.list():
+    #     print(key.name)
+    #     print(key.size)
 
         # k.key = key.name
         # print(k.get_contents_as_string())
