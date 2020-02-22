@@ -1,14 +1,30 @@
 from locust import HttpLocust, TaskSet, task, between
 
 
+def get_common_menu(l):
+    l.client.get('/api/common/menu', headers=l.headers)
+
+
+def get_api_users(l):
+    l.client.get('/api/users/', headers=l.headers)
+
+
+def get_api_groups(l):
+    l.client.get('/api/groups/', headers=l.headers)
+
+
+def get_api_maillists(l):
+    l.client.get('/api/maillists/', headers=l.headers)
+
+
 class APITest(TaskSet):
     token = ''
     headers = {}
-    def setup(self):
-        print("setup")
+
+    tasks = [get_api_users]
 
     def on_start(self):
-        r = self.client.post('/api/auth/login', {'username': 'ted', 'password': 'abc'})
+        r = self.client.post('/api/auth/login', {'username': 'ted', 'password': 'ted'})
         print(r.status_code)
         if r.status_code == 200:
             response_data = r.json()
@@ -21,26 +37,6 @@ class APITest(TaskSet):
 
     def on_stop(self):
         print("on stop")
-
-    def teardown(self):
-        print('teardown')
-
-    @task(1)
-    def get_common_menu(self):
-        self.client.get('/api/common/menu', headers=self.headers)
-
-    @task(1)
-    def get_api_users(self):
-        self.client.get('/api/users/', headers=self.headers)
-
-    @task(1)
-    def get_api_groups(self):
-        self.client.get('/api/groups/', headers=self.headers)
-
-    @task(1)
-    def get_api_maillists(self):
-        self.client.get('/api/maillists/', headers=self.headers)
-
 
 
 class APITester(HttpLocust):
