@@ -1,12 +1,15 @@
 import functools
 
 
-def hello(func):
-    functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        print("hello world!")
-        return func(*args, **kwargs)
-    return wrapper
+def hello(path, *, data):
+    def wrapped(func):
+
+        functools.wraps(func)
+        def wrapped_func(*args, **kwargs):
+            print(f'hello, {path}, {data}')
+            return func(*args, **kwargs)
+        return wrapped_func
+    return wrapped
 
 
 def cached(key: str = ""):
@@ -25,9 +28,9 @@ def cached(key: str = ""):
     return wrapper
 
 
-@hello
+@hello(path="dead", data="heheheh")
 # cache() function with parameter will hijack output of dude()
-@cached()
+@cached('bitch')
 def dude(name: str = 'Dude'):
     print("in dude")
     return f"hey {name}"
