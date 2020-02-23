@@ -30,7 +30,7 @@ def cached(key: str = ""):
 
 @hello(path="dead", data="heheheh")
 # cache() function with parameter will hijack output of dude()
-@cached('bitch')
+@cached()
 def dude(name: str = 'Dude'):
     print("in dude")
     return f"hey {name}"
