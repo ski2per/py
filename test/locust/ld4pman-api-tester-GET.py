@@ -9,6 +9,10 @@ def get_api_users(l):
     l.client.get('/api/users/', headers=l.headers)
 
 
+def get_api_users_me(l):
+    l.client.get('/api/users/me', headers=l.headers)
+
+
 def get_api_groups(l):
     l.client.get('/api/groups/', headers=l.headers)
 
@@ -21,7 +25,10 @@ class APITest(TaskSet):
     token = ''
     headers = {}
 
-    tasks = [get_api_users]
+    tasks = [
+        get_api_users_me,
+        get_api_users,
+    ]
 
     def on_start(self):
         r = self.client.post('/api/auth/login', {'username': 'ted', 'password': 'ted'})
