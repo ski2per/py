@@ -6,7 +6,7 @@ class PopUpDialog(urwid.WidgetWrap):
     """A dialog that appears with nothing but a close button """
     signals = ['close']
     def __init__(self):
-        close_button = urwid.Button("牛逼不？")
+        close_button = urwid.Button("that's pretty cool")
         urwid.connect_signal(close_button, 'click',
             lambda button:self._emit("close"))
         pile = urwid.Pile([urwid.Text(
@@ -31,18 +31,11 @@ class ThingWithAPopUp(urwid.PopUpLauncher):
     def get_pop_up_parameters(self):
         return {'left':0, 'top':1, 'overlay_width':32, 'overlay_height':7}
 
-def exit_mainloop(key):
-    if key in('esc'):
-        raise urwid.ExitMainLoop()
-
 
 fill = urwid.Filler(urwid.Padding(ThingWithAPopUp(), 'center', 15))
 loop = urwid.MainLoop(
     fill,
     [('popbg', 'white', 'dark blue')],
-    pop_ups=True,
-    unhandled_input=exit_mainloop
-
-)
+    pop_ups=True)
 loop.run()
 
