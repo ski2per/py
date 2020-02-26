@@ -2,7 +2,7 @@ import urwid
 
 
 class PackageChoice(urwid.WidgetWrap):
-    signals = ['checkbox_change']
+    signals = ['change_event']
 
     def __init__(self):
         self.options = []
@@ -30,7 +30,7 @@ class PackageChoice(urwid.WidgetWrap):
         urwid.WidgetWrap.__init__(self, list_box)
 
     def _emit_change(self, *args):
-        self._emit('checkbox_change', args)
+        self._emit('change_event', args)
 
     def get_package_list(self):
         packages = []
@@ -41,25 +41,30 @@ class PackageChoice(urwid.WidgetWrap):
 
         return packages
 
-    # def get_state(self):
-    #     for o in self.options:
-    #         if o.get_state() is True:
-    #             return o.get_label()
-
 
 class PopupDialog(urwid.WidgetPlaceholder):
-    def __init__(self, original_widget):
-        super().__init__(original_widget)
-        PopupDialog.super
-        super(PopupDialog, self).__init__()
+    signals = ['quit_event']
+    def __init__(self):
+        super().__init__(urwid.SolidFill(' '))
         content = [
             urwid.Text("Quit Setup Wizard ?"),
             urwid.Columns([
-                urwid.Button('Yes'),
-                urwid.Button('No'),
+                urwid.Button('Yes', on_press=self._emit_quit_event),
+                urwid.Button('No', on_press=self._emit_quit_event),
             ])
         ]
-        urwid.WidgetWrap.__init__(self, urwid.ListBox(urwid.SimpleListWalker(content)))
+        # urwid.WidgetWrap.__init__(self, urwid.ListBox(urwid.SimpleListWalker(content)))
+        self.origin = urwid.ListBox(urwid.SimpleListWalker(content))
+    def open(self):
+        self.original_widget = urwid.Overlay(urwid.LineBox(self.origin),
+                                             self.original_widget,
+                                             align='center', width=('relative', 30),
+                                             valign='middle', height=('relative', 30)
+                                             )
+
+
+    def _emit_quit_event(self, *args):
+        self._emit('quit_event', args)
 
 
 
@@ -117,6 +122,7 @@ class SetupWizard:
     ])
 
     components = []
+    quitting = False
 
     def __init__(self):
         self.debug = urwid.AttrWrap(urwid.Text('DEBUG'), 'debug')
@@ -142,7 +148,7 @@ class SetupWizard:
     def _build_footer(self):
         return urwid.AttrWrap(urwid.Text(self.footer_text), 'footer')
 
-    def _handle_checkbox_change(self, *args):
+    def _handle_change_event(self, *args):
         _, state, label = args[1]
         if state:
             if label not in self.components:
@@ -156,26 +162,39 @@ class SetupWizard:
         self.debug.set_text(','.join(self.components))
         # self.debug.set_text(f'{user_data}')
 
+    def _handle_quit_event(self, widget, item):
+        btn, = item
+        self.debug.set_text(f'{btn.label.lower()}')
+        if btn.label.lower() == 'yes':
+            self._quit()
+        else:
+            self.quitting = False
+            self.set_view(self.last_content)
+
+
+    def _quit(self):
+        raise urwid.ExitMainLoop()
+
     def _unhandled_control(self, k):
         """Last resort for keypresses."""
+        if not self.quitting:
+            if k == "f2":
+                self.debug.set_text("you press F2")
+                package_choice = PackageChoice()
+                urwid.connect_signal(package_choice, 'change_event', self._handle_change_event)
+                self.set_view(package_choice)
 
-        if k == "f2":
-            self.debug.set_text("you press F2")
-            package_choice = PackageChoice()
-            urwid.connect_signal(package_choice, 'checkbox_change', self._handle_checkbox_change)
-            self.set_view(package_choice)
+            elif k == "f4":
+                self.debug.set_text("you press F4")
+                self.quitting = True
+                popup = PopupDialog()
+                urwid.connect_signal(popup, 'quit_event', self._handle_quit_event)
+                popup.original_widget = self.current_content
+                popup.open()
+                self.set_view(popup)
 
-        elif k == "f3":
-            self.debug.set_text("you press F3")
-            popup = PopupDialog()
-            self.set_view(popup)
-
-        elif k == "f4":
-            self.debug.set_text("you press F4")
-            self.popup_quit()
-            # raise urwid.ExitMainLoop()
-        else:
-            return
+            else:
+                return
         return True
 
     def set_view(self, widget):
@@ -183,11 +202,6 @@ class SetupWizard:
         self.current_content = widget
         view = urwid.Frame(self.current_content, header=self.header, footer=self.footer)
         self.loop.widget = view
-
-    def popup_quit(self):
-        top_w = PopupDialog()
-        self.original_widget = overlay = urwid.Overlay(top_w, self.original_widget, align="center", width=50, valign="middle", height=50)
-        self.set_view(overlay)
 
 
     def main(self):

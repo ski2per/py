@@ -43,7 +43,8 @@ class CascadingBoxes(urwid.WidgetPlaceholder):
     max_box_levels = 4
 
     def __init__(self, box):
-        super(CascadingBoxes, self).__init__(urwid.SolidFill(u'/'))
+        # super(CascadingBoxes, self).__init__(urwid.SolidFill(u'/'))
+        super().__init__(urwid.SolidFill(u'/'))
         self.box_level = 0
         self.open_box(box)
 
