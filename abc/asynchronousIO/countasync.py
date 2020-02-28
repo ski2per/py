@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # countasync.py
-
+import time
 import asyncio
 
 async def count():
@@ -9,6 +9,7 @@ async def count():
     print("Two")
 
 async def main():
+    time.sleep(2)
     await asyncio.gather(count(), count(), count())
 
 if __name__ == "__main__":

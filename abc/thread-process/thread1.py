@@ -12,7 +12,7 @@ if __name__ == "__main__":
     print("start thread")
     t = Thread(name="robot", target=hello)
     t.start()
-    # t.join()
+    t.join()
     print("main end")
 
 
