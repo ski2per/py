@@ -7,10 +7,13 @@ logging.basicConfig(level=logging.DEBUG,
                     datefmt = "%H:%M:%S",)
 
 
-def wait_for_event(e):
-    logging.debug('wait_for_event starting')
-    event_is_set = e.wait()
-    logging.debug('event set: %s', event_is_set)
+def wait_for_event(e: threading.Event):
+    lock.acquire()
+    logging.debug(e.is_set())
+    logging.debug('waiting')
+    time.sleep(2)
+    logging.debug('done')
+    lock.release()
 
 
 def wait_for_event_timeout(e, t):
@@ -26,15 +29,15 @@ def wait_for_event_timeout(e, t):
 
 if __name__ == '__main__':
     e = threading.Event()
-    t1 = threading.Thread(name='blocking',
+    lock = threading.Lock()
+
+    e.set()
+    for i in range(2):
+        t1 = threading.Thread(name='th-{}'.format(i),
                           target=wait_for_event,
                           args=(e,))
-    t1.start()
-
-    t2 = threading.Thread(name='non-blocking',
-                          target=wait_for_event_timeout,
-                          args=(e, 2))
-    t2.start()
+        t1.start()
+        # e.set()
 
     logging.debug('Waiting before calling Event.set()')
     time.sleep(3)
