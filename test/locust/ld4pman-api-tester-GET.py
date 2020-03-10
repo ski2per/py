@@ -28,6 +28,8 @@ class APITest(TaskSet):
     tasks = [
         get_api_users_me,
         get_api_users,
+        get_api_groups,
+        get_api_maillists,
     ]
 
     def on_start(self):
@@ -38,9 +40,10 @@ class APITest(TaskSet):
             self.token = response_data['access_token']
             self.headers['Authorization'] = f'Bearer {self.token}'
         else:
-            print('Auth error, quit')
+            pass
+            # print('Auth error, quit')
             # Find no other way to quit currently
-            exit()
+            # exit()
 
     def on_stop(self):
         print("on stop")

@@ -1,25 +1,15 @@
 import re
 
-url_patterns = [
-    r'/api/maillists/(.+?)/(.+?)$',
-    r'/api/groups/(.+?)/(.+?)/(.+?)$',
-]
 
-url = '/api/groups/jira/jira-software-users/member'
+ptn = '/api/groups/.+?'
+# ptn = '/api/groups/'
 
-for ptn in url_patterns:
-    if re.match(ptn, url):
-        print('matched')
-        break
+url = '/api/groups/'
+# url = '/api/groups/jira'
+# url = '/api/groups/jira/jira-software-users'
+# url = '/api/groups/jira/jira-software-users/member'
 
-ptn = '/(.*)/.+$'
-s = '/api/groups/jira/jira-software-users/shit'
-
-tmp = s.split('/')[:-1]
-print(type(tmp))
-tmp.append('member')
-print('/'.join(tmp))
+# print(re.match(ptn, url))
 
 
-
-
+print(re.fullmatch(ptn, url))
