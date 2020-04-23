@@ -17,8 +17,16 @@ def get_api_groups(l):
     l.client.get('/api/groups/', headers=l.headers)
 
 
-def get_api_maillists(l):
+def get_api_maillist(l):
     l.client.get('/api/maillists/', headers=l.headers)
+
+
+def get_api_maillist_all_group_member(l):
+    l.client.get('/api/maillists/all_group/member', headers=l.headers)
+
+
+def get_api_maillist_devops_group_member(l):
+    l.client.get('/api/maillists/devops_group/member', headers=l.headers)
 
 
 class APITest(TaskSet):
@@ -29,7 +37,9 @@ class APITest(TaskSet):
         get_api_users_me,
         get_api_users,
         get_api_groups,
-        get_api_maillists,
+        get_api_maillist,
+        get_api_maillist_all_group_member,
+        get_api_maillist_devops_group_member
     ]
 
     def on_start(self):
