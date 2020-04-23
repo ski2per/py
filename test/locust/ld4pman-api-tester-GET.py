@@ -1,48 +1,17 @@
 from locust import HttpLocust, TaskSet, task, between
 
 
-def get_common_menu(l):
-    l.client.get('/api/common/menu', headers=l.headers)
-
-
-def get_api_users(l):
-    l.client.get('/api/users/', headers=l.headers)
-
-
-def get_api_users_me(l):
-    l.client.get('/api/users/me', headers=l.headers)
-
-
-def get_api_groups(l):
-    l.client.get('/api/groups/', headers=l.headers)
-
-
-def get_api_maillist(l):
-    l.client.get('/api/maillists/', headers=l.headers)
-
-
-def get_api_maillist_all_group_member(l):
-    l.client.get('/api/maillists/all_group/member', headers=l.headers)
-
-
-def get_api_maillist_devops_group_member(l):
-    l.client.get('/api/maillists/devops_group/member', headers=l.headers)
-
-
-class APITest(TaskSet):
+class LDAPMAN_API_TESTER(TaskSet):
     token = ''
     headers = {}
 
-    tasks = [
-        get_api_users_me,
-        get_api_users,
-        get_api_groups,
-        get_api_maillist,
-        get_api_maillist_all_group_member,
-        get_api_maillist_devops_group_member
-    ]
-
     def on_start(self):
+        self.login()
+
+    def on_stop(self):
+        print("stop tester")
+
+    def login(self):
         r = self.client.post('/api/auth/login', {'username': 'ted', 'password': 'ted'})
         print(r.status_code)
         if r.status_code == 200:
@@ -51,14 +20,32 @@ class APITest(TaskSet):
             self.headers['Authorization'] = f'Bearer {self.token}'
         else:
             pass
-            # print('Auth error, quit')
-            # Find no other way to quit currently
-            # exit()
 
-    def on_stop(self):
-        print("on stop")
+    @task()
+    def test_menu(self):
+        self.client.get('/api/common/menu', headers=self.headers)
+
+    @task()
+    def test_users(self):
+        self.client.get('/api/users/', headers=self.headers)
+
+    @task()
+    def test_groups(self):
+        self.client.get('/api/groups/', headers=self.headers)
+
+    @task()
+    def test_maillist(self):
+        self.client.get('/api/maillists/', headers=self.headers)
+
+    @task()
+    def get_api_maillist_all_group_member(l):
+        l.client.get('/api/maillists/all_group/member', headers=l.headers)
+
+    @task()
+    def get_api_maillist_devops_group_member(l):
+        l.client.get('/api/maillists/devops_group/member', headers=l.headers)
 
 
 class APITester(HttpLocust):
-    task_set = APITest
+    task_set = LDAPMAN_API_TESTER
     wait_time = between(2, 6)
