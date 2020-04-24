@@ -1,24 +1,12 @@
-
-path = "houses[].houseOrgBorrowInfos.personName.abc[].efg"
-
-import copy
-
-l = path.split('.')
-l.reverse()
-
-tmp = None
-
-def abc(item):
+def recursion(l: list):
     global tmp
-    if len(item) == 0:
-        return 
-    if isinstance(item, list):
-        item.pop()
-        return abc(item)
+    if len(l) == 0:
+        return tmp
     else:
+        item = l.pop()
         if item.endswith('[]'):
             inner_object = {
-                item[:-2] = [tmp]
+                item[:-2]: [tmp]
             }
             # tmp = copy.deepcopy(inner_object)
             tmp = inner_object
@@ -28,20 +16,32 @@ def abc(item):
             }
             tmp = inner_object
 
-        return tmp
+        return recursion(l)
 
 
-# abc(path.split('.'))
+def for_loop(l: list):
+    l.reverse()
+    global tmp
+    for item in l:
+        if item.endswith('[]'):
+            inner_object = {
+                item[:-2]: [tmp]
+            }
+            # tmp = copy.deepcopy(inner_object)
+            tmp = inner_object
+        else:
+            inner_object = {
+                item: tmp
+            }
+            tmp = inner_object
+
+    return tmp
 
 
-def factorial_recursive(n):
-    # Base case: 1! = 1
-    if n == 1:
-        return 1
+if __name__ == "__main__":
+    path = "houses[].houseOrgBorrowInfos.personName.abc[].efg"
 
-    # Recursive case: n! = n * (n-1)!
-    else:
-        return n * factorial_recursive(n-1)
+    tmp = None
 
-
-print(factorial_recursive(3))
+    # print(recursion(path.split('.')))
+    print(for_loop(path.split('.')))
