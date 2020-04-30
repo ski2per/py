@@ -226,9 +226,6 @@ loan_data = loan_data(10, {})
 
 def _get_module_value(module):
     new_data = {}
-    # 老数据
-    # old_info = self.get_node_info(process_relation_id=process_relation_id)
-    # print("以前的数据", json.dumps(old_info))
     outer_key = ""
     for config in module["configs"]:
         # 判断是否必填的值
@@ -253,13 +250,6 @@ def _get_module_value(module):
 
     return {outer_key: new_data}
 
-    # print("填充的数据", new_data)
-    # print("test")
-    # # print("填写后的数据", json.dumps(old_info))
-    # # old_info["processCode"] = process_node
-    # # old_info["nodeCode"] = node_node
-    # # old_info["processRelationId"] = process_relation_id
-    # # old_info["isCommit"] = True
 
 if __name__ == "__main__":
 
