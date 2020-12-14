@@ -1,13 +1,12 @@
 import os
 import sys
 import socket
-#import pkg_resources
-#from pyspark.sql import SparkSession
 import example.util
+from pyspark.sql import SparkSession
 from example.http.url import detect_url
 
 
-#spark = SparkSession.builder.appName("PythonExample").getOrCreate()
+spark = SparkSession.builder.appName("PythonExample").getOrCreate()
 
 print("\n")
 print("====================================")
@@ -33,4 +32,4 @@ print("====================================")
 
 print("\n")
 
-#spark.stop()
+spark.stop()

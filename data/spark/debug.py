@@ -5,7 +5,7 @@ import pkg_resources
 from pyspark.sql import SparkSession
 
 
-spark = SparkSession.builder.appName("EnvDemo").getOrCreate()
+spark = SparkSession.builder.appName("Debug").getOrCreate()
 #spark = SparkSession.builder.master(master).appName("EnvDemo").getOrCreate()
 
 ver = sys.version_info
