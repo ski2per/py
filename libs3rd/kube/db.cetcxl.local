@@ -1,0 +1,30 @@
+;
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     cetcxl.local. root.cetcxl.local. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      cetcxl.local.
+@       IN      A       172.16.2.53
+@       IN      AAAA    ::1
+
+www			IN	A	172.16.2.10
+grafana			IN	A	172.16.10.2
+prometheus		IN	A	172.16.10.2
+pushgateway		IN	A	172.16.10.2
+k8s			IN	A	172.16.10.2
+docker          	IN      A       172.16.10.2
+gitlab          	IN      A       172.16.10.2
+jenkins			IN	A	172.16.101.213
+jenkins2                IN      A       172.16.4.54
+maven                   IN      A       172.16.10.2
+jira			IN	A	172.16.101.172
+testlink		IN	A	172.16.101.216
+rancher			IN	A	172.16.110.1
+xlpay                   IN      A       172.16.2.53
+xlpay-user              IN      A       172.16.2.53
