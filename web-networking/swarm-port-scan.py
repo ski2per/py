@@ -1,6 +1,6 @@
 import socket
 import threading
-
+import multiprocessing
 
 
 class Listener(threading.Thread):
@@ -8,56 +8,70 @@ class Listener(threading.Thread):
     def __init__(self, name, port, proto):
         super().__init__(name=name)
         self._running = True
-        if proto == "both":
-            # self.svr_tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            # self.svr_tcp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            # self.svr_tcp.bind(("0.0.0.0", port))
-            # self.svr_tcp.listen()
-
-            self.svr_udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            self.svr_udp.bind(("0.0.0.0", port))
-
-        # self.svr_socket.bind(("0.0.0.0", port))
-        # self.svr_socket.listen()
+        self._proto = proto
+        print("init", proto, port)
+        try:
+            if proto == "tcp":
+                self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                # Use socket in TIME_WAIT state
+                self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+                print("here", port)
+                self.sock.bind(("0.0.0.0", port))
+                self.sock.listen()
+            else:
+                self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+                self.sock.bind(("0.0.0.0", port))
+        except OSError as err:
+            print(port, err)
 
     def run(self):
+        print(self._proto)
         while self._running:
-            print("shit")
-            # conn_tcp, client_addr_tcp = self.svr_tcp.accept()
-            # conn_udp, client_addr_udp = self.svr_udp.accept()
-            data, addr = self.svr_udp.recv(4096)
-            print(data)
-            # while self._running:
-            #     print("here")
-            #     udata, addr = self.svr_udp.recv(4096)
-            #     print(udata)
-            #     print(addr)
-            #     data = conn_tcp.recv(4096)
-            #     print(f"Got data: {data}")
-            #     s = data.decode().strip()
-            #     if data:
-            #         conn_tcp.sendall(f"[{s}]".encode())
-            #     else:
-            #         print("nodata")
-            #         self._running = False
-            #         break
+            if self._proto == "tcp":
+                tcp_conn, addr = self.sock.accept()
+                print("accept tcp connection", addr)
+                th = threading.Thread(target=self._handle_tcp_conn, args=(tcp_conn, addr))
+                th.daemon = True
+                th.start()
+            else:
+                data, addr = self.sock.recvfrom(4096)
+                print("udp", addr)
+                self.sock.sendto(data, addr)
 
+    def _handle_tcp_conn(self, connection, address):
+        try:
+            while True:
+                raw_data, addr = connection.recvfrom(4096)
+                data = raw_data.decode().strip()
+                print(data)
+                if data == "":
+                    break
+                connection.sendto(raw_data, address)
+        # except:
+        #     print("exception caught")
+        finally:
+            connection.close()
 
 
 if __name__ == "__main__":
+    target_ips = ["172.16.66.6"]
 
-    ports = {
-        "both": [7946],
-        "tcp": [2377],
-        "udp": [4789]
+    swarm_ports = {
+        # "tcp": [2377, 7946, 26500, 26501, 80, 443],
+        "tcp": [10086, 10000],
+        # "udp": [24789, 7946]
+        # "udp": [24789]
     }
 
-    # for k, v in ports.items():
-    #     for port in v:
-    #         print(k, port)
-    #         lsr = Listener(str(port), port, k)
-    lsr = Listener(str(10086), 10086, "both")
-    lsr.start()
+    listeners = []
+    # lsr = Listener(str(10086), 10086, "tcp")
+
+    for proto, ports in swarm_ports.items():
+        for port in ports:
+            lsr = Listener(str(port), port, proto)
+            listeners.append(lsr)
 
 
-    # pt = Listener("shit", 10080)
+    for listener in listeners:
+        listener.start()
+        listener.join()
