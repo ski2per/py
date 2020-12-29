@@ -62,15 +62,18 @@ def detect_port(host, port, proto):
 
 if __name__ == "__main__":
     target_hosts = [
-        "172.16.66.6",
-        "172.16.66.10"
+        "117.73.8.198",
+        "117.73.11.109",
+        "117.73.9.253",
+        "117.73.8.152",
+        "117.73.2.152"
     ]
 
     swarm_ports = {
-        # "tcp": [2377, 7946, 26500, 26501, 80, 443],
-        "tcp": [10086, 10000],
-        # "udp": [24789, 7946]
-        "udp": [24789]
+        "tcp": [2377, 7946, 26500, 26501, 80, 443],
+        #"tcp": [10086, 10000],
+         "udp": [24789, 7946]
+        #"udp": [24789]
     }
 
     tcp_servers = []
@@ -96,6 +99,7 @@ if __name__ == "__main__":
         udp.start()
 
     while True:
+        print("====================================")
         for host in target_hosts:
             for proto, ports in swarm_ports.items():
                 for port in ports:
