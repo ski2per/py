@@ -41,9 +41,9 @@ def detect_port(host, port, proto):
                 if received.strip() == "HELLO":
                     print("[{}] {} {} SUCCESS".format(proto, host, port))
                 else:
-                    print("[{}] {} {} FAILED: WRONG ECHO".format(proto, host, port))
+                    print("\033[1;31m[{}] {} {} FAILED: WRONG ECHO\033[0;0m".format(proto, host, port))
             except OSError as err:
-                print("[{}] {} {} FAILED: {}".format(proto, host, port, err))
+                print("\033[1;31m[{}] {} {} FAILED: {}\033[0;0m".format(proto, host, port, err))
     else:
         # UDP
         try:
@@ -55,25 +55,22 @@ def detect_port(host, port, proto):
             if received.strip() == "HELLO":
                 print("[{}] {} {} SUCCESS".format(proto, host, port))
             else:
-                print("[{}] {} {} FAILED: WRONG ECHO".format(proto, host, port))
+                print("\033[1;31m[{}] {} {} FAILED: WRONG ECHO\033[0;0m".format(proto, host, port))
         except socket.timeout as err:
-            print("[{}] {} {} FAILED: {}".format(proto, host, port, err))
+            print("\033[1;31m[{}] {} {} FAILED: {}\033[0;0m".format(proto, host, port, err))
 
 
 if __name__ == "__main__":
     target_hosts = [
-        "117.73.8.198",
-        "117.73.11.109",
-        "117.73.9.253",
-        "117.73.8.152",
-        "117.73.2.152"
+        "172.16.66.6",
+        "172.16.66.10",
     ]
 
     swarm_ports = {
-        "tcp": [2377, 7946, 26500, 26501, 80, 443],
-        #"tcp": [10086, 10000],
-         "udp": [24789, 7946]
-        #"udp": [24789]
+        #"tcp": [2377, 7946, 26500, 26501, 80, 443],
+        "tcp": [10086, 10000],
+        #"udp": [24789, 7946]
+        "udp": [24789]
     }
 
     tcp_servers = []
